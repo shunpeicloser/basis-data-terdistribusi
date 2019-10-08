@@ -1,0 +1,3 @@
+SET GLOBAL group_replication_bootstrap_group=ON;
+START group_replication;
+SET GLOBAL group_replication_bootstrap_group=OFF;
