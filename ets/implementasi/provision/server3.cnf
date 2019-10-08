@@ -38,7 +38,7 @@ loose-group_replication_ssl_mode = REQUIRED
 loose-group_replication_recovery_use_ssl = 1
 
 # Shared replication group configuration
-loose-group_replication_group_name = "8f22f846-9922-4139-b2b7-097d185a93cb"
+loose-group_replication_group_name = "fac430b6-caac-436f-ad45-b2b0a35748d1"
 loose-group_replication_ip_whitelist = "192.168.16.16, 192.168.16.17, 192.168.16.18"
 loose-group_replication_group_seeds = "192.168.16.16:33061, 192.168.16.17:33061, 192.168.16.18:33061"
 
@@ -48,7 +48,7 @@ loose-group_replication_single_primary_mode = OFF
 loose-group_replication_enforce_update_everywhere_checks = ON
 
 # Host specific replication configuration
-server_id = 1
+server_id = 3
 bind-address = "192.168.16.18"
 report_host = "192.168.16.18"
 loose-group_replication_local_address = "192.168.16.18:33061"
