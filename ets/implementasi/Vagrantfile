@@ -11,7 +11,7 @@ Vagrant.configure("2") do |config|
     # within the machine from a port on the host machine. In the example below,
     # accessing "localhost:8080" will access port 80 on the guest machine.
     # NOTE: This will enable public access to the opened port
-    # server1.vm.network "forwarded_port", guest: 3306, host: 65000
+    server1.vm.network "forwarded_port", guest: 3306, host: 65000
 
     # Create a forwarded port mapping which allows access to a specific port
     # within the machine from a port on the host machine and only allow access
@@ -26,6 +26,8 @@ Vagrant.configure("2") do |config|
     # Bridged networks make the machine appear as another physical device on
     # your network.
     # server1.vm.network "public_network"
+
+    server1.vm.synced_folder "./provision", "/shared_dir"
 
     server1.vm.provider "virtualbox" do |vb|
       # Display the VirtualBox GUI when booting the machine
@@ -43,25 +45,13 @@ Vagrant.configure("2") do |config|
     server2.vm.box = "bento/ubuntu-16.04"
     server2.vm.hostname = "server2"
 
-    # Create a forwarded port mapping which allows access to a specific port
-    # within the machine from a port on the host machine. In the example below,
-    # accessing "localhost:8080" will access port 80 on the guest machine.
-    # NOTE: This will enable public access to the opened port
-    # server2.vm.network "forwarded_port", guest: 3306, host: 65000
-
-    # Create a forwarded port mapping which allows access to a specific port
-    # within the machine from a port on the host machine and only allow access
-    # via 127.0.0.1 to disable public access
-    # config.vm.network "forwarded_port", guest: 80, host: 8080, host_ip: "127.0.0.1"
+    server2.vm.network "forwarded_port", guest: 3306, host: 65001
 
     # Create a private network, which allows host-only access to the machine
     # using a specific IP.
     server2.vm.network "private_network", ip: "192.168.16.17"
 
-    # Create a public network, which generally matched to bridged network.
-    # Bridged networks make the machine appear as another physical device on
-    # your network.
-    # server2.vm.network "public_network"
+    server2.vm.synced_folder "./provision", "/shared_dir"
 
     server2.vm.provider "virtualbox" do |vb|
       # Display the VirtualBox GUI when booting the machine
@@ -79,25 +69,13 @@ Vagrant.configure("2") do |config|
     server3.vm.box = "bento/ubuntu-16.04"
     server3.vm.hostname = "server3"
 
-    # Create a forwarded port mapping which allows access to a specific port
-    # within the machine from a port on the host machine. In the example below,
-    # accessing "localhost:8080" will access port 80 on the guest machine.
-    # NOTE: This will enable public access to the opened port
-    # server3.vm.network "forwarded_port", guest: 3306, host: 65000
-
-    # Create a forwarded port mapping which allows access to a specific port
-    # within the machine from a port on the host machine and only allow access
-    # via 127.0.0.1 to disable public access
-    # config.vm.network "forwarded_port", guest: 80, host: 8080, host_ip: "127.0.0.1"
+    server3.vm.network "forwarded_port", guest: 3306, host: 65002
 
     # Create a private network, which allows host-only access to the machine
     # using a specific IP.
     server3.vm.network "private_network", ip: "192.168.16.18"
 
-    # Create a public network, which generally matched to bridged network.
-    # Bridged networks make the machine appear as another physical device on
-    # your network.
-    # server3.vm.network "public_network"
+    server3.vm.synced_folder "./provision", "/shared_dir"
 
     server3.vm.provider "virtualbox" do |vb|
       # Display the VirtualBox GUI when booting the machine
@@ -115,25 +93,13 @@ Vagrant.configure("2") do |config|
     proxy.vm.box = "bento/ubuntu-16.04"
     proxy.vm.hostname = "proxy"
 
-    # Create a forwarded port mapping which allows access to a specific port
-    # within the machine from a port on the host machine. In the example below,
-    # accessing "localhost:8080" will access port 80 on the guest machine.
-    # NOTE: This will enable public access to the opened port
-    # proxy.vm.network "forwarded_port", guest: 3306, host: 65000
-
-    # Create a forwarded port mapping which allows access to a specific port
-    # within the machine from a port on the host machine and only allow access
-    # via 127.0.0.1 to disable public access
-    # config.vm.network "forwarded_port", guest: 80, host: 8080, host_ip: "127.0.0.1"
+    proxy.vm.network "forwarded_port", guest: 6033, host: 65003
 
     # Create a private network, which allows host-only access to the machine
     # using a specific IP.
     proxy.vm.network "private_network", ip: "192.168.16.240"
 
-    # Create a public network, which generally matched to bridged network.
-    # Bridged networks make the machine appear as another physical device on
-    # your network.
-    # proxy.vm.network "public_network"
+    proxy.vm.synced_folder "./provision", "/shared_dir"
 
     proxy.vm.provider "virtualbox" do |vb|
       # Display the VirtualBox GUI when booting the machine
