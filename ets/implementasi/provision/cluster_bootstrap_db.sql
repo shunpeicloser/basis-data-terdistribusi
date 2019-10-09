@@ -1,6 +1,4 @@
-SET GLOBAL group_replication_bootstrap_group=ON;
-START GROUP_REPLICATION;
-SET GLOBAL group_replication_bootstrap_group=OFF;
+
 -- --------------------------------------------------------
 -- Host:                         127.0.0.1
 -- Server version:               10.1.37-MariaDB - mariadb.org binary distribution
