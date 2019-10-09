@@ -1,5 +1,5 @@
 # Changing the APT sources.list to kambing.ui.ac.id
-sudo cp '/vagrant/sources.list' '/etc/apt/sources.list'
+sudo cp '/vagrant/provision/sources.list' '/etc/apt/sources.list'
 
 # Updating the repo with the new sources
 sudo apt-get update -y
@@ -35,7 +35,7 @@ sudo cp /vagrant/server3.cnf /etc/mysql/server3.cnf
 sudo service mysql restart
 
 # Cluster bootstrapping
-# sudo mysql -u root -padmin < /vagrant/cluster_bootstrap_setting.sql
-# sudo mysql -u root -padmin < /vagrant/addition_to_sys.sql
-# sudo mysql -u root -padmin < /vagrant/cluster_bootstrap_db.sql
-# sudo mysql -u root -padmin < /vagrant/create_proxysql_user.sql
+# sudo mysql -u root -padmin < /vagrant/provision/cluster_bootstrap_setting.sql
+# sudo mysql -u root -padmin < /vagrant/provision/addition_to_sys.sql
+# sudo mysql -u root -padmin < /vagrant/provision/cluster_bootstrap_db.sql
+# sudo mysql -u root -padmin < /vagrant/provision/create_proxysql_user.sql
