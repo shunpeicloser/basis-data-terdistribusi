@@ -11,7 +11,7 @@ Vagrant.configure("2") do |config|
     # within the machine from a port on the host machine. In the example below,
     # accessing "localhost:8080" will access port 80 on the guest machine.
     # NOTE: This will enable public access to the opened port
-    server1.vm.network "forwarded_port", guest: 3306, host: 65000
+    server1.vm.network "forwarded_port", guest: 3306, host: 33060
 
     # Create a forwarded port mapping which allows access to a specific port
     # within the machine from a port on the host machine and only allow access
@@ -43,7 +43,7 @@ Vagrant.configure("2") do |config|
     server2.vm.box = "bento/ubuntu-16.04"
     server2.vm.hostname = "server2"
 
-    server2.vm.network "forwarded_port", guest: 3306, host: 65001
+    server2.vm.network "forwarded_port", guest: 3306, host: 33061
 
     # Create a private network, which allows host-only access to the machine
     # using a specific IP.
@@ -65,7 +65,7 @@ Vagrant.configure("2") do |config|
   #   server3.vm.box = "bento/ubuntu-16.04"
   #   server3.vm.hostname = "server3"
 
-  #   server3.vm.network "forwarded_port", guest: 3306, host: 65002
+  #   server3.vm.network "forwarded_port", guest: 3306, host: 33062
 
   #   # Create a private network, which allows host-only access to the machine
   #   # using a specific IP.
@@ -83,26 +83,26 @@ Vagrant.configure("2") do |config|
 
   # end
 
-  # config.vm.define "proxy" do |proxy|
-  #   proxy.vm.box = "bento/ubuntu-16.04"
-  #   proxy.vm.hostname = "proxy"
+  config.vm.define "proxy" do |proxy|
+    proxy.vm.box = "bento/ubuntu-16.04"
+    proxy.vm.hostname = "proxy"
 
-  #   proxy.vm.network "forwarded_port", guest: 6033, host: 65003
+    proxy.vm.network "forwarded_port", guest: 6033, host: 60330
 
-  #   # Create a private network, which allows host-only access to the machine
-  #   # using a specific IP.
-  #   proxy.vm.network "private_network", ip: "192.168.16.240"
+    # Create a private network, which allows host-only access to the machine
+    # using a specific IP.
+    proxy.vm.network "private_network", ip: "192.168.16.240"
 
-  #   proxy.vm.provider "virtualbox" do |vb|
-  #     # Display the VirtualBox GUI when booting the machine
-  #     vb.gui = false
+    proxy.vm.provider "virtualbox" do |vb|
+      # Display the VirtualBox GUI when booting the machine
+      vb.gui = false
     
-  #     # Customize the amount of memory on the VM:
-  #     vb.memory = "256"
-  #   end
+      # Customize the amount of memory on the VM:
+      vb.memory = "256"
+    end
 
-  #   proxy.vm.provision "shell", path: "provision/proxy.sh", privileged: false
+    proxy.vm.provision "shell", path: "provision/proxy.sh", privileged: false
 
-  # end
+  end
 
 end
