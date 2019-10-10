@@ -3,9 +3,7 @@
 -- Host: 127.0.0.1    Database: elaporan
 -- ------------------------------------------------------
 -- Server version	10.3.16-MariaDB
-
-start transaction;
-
+START TRANSACTION;
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
@@ -20,9 +18,11 @@ start transaction;
 --
 -- Table structure for table `detail_laporan_kinerja_triwulan`
 --
-drop database if exists elaporan;
-create database if not exists elaporan;
-use elaporan;
+
+DROP DATABASE IF EXISTS `elaporan`;
+CREATE DATABASE IF EXISTS `elaporan`;
+USE `elaporan`;
+
 DROP TABLE IF EXISTS `detail_laporan_kinerja_triwulan`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
@@ -447,7 +447,7 @@ CREATE TABLE `tipelaporan_per_opd` (
 
 LOCK TABLES `tipelaporan_per_opd` WRITE;
 /*!40000 ALTER TABLE `tipelaporan_per_opd` DISABLE KEYS */;
-INSERT INTO `tipelaporan_per_opd` VALUES (8,1),(8,2),(8,3),(8,4),(8,5),(8,6),(8,7),(8,8),(8,9),(8,10),(8,11),(8,12),(8,13),(8,14),(8,15),(8,16);
+INSERT INTO `tipelaporan_per_opd` VALUES (8,4),(8,8),(8,9),(8,10),(8,11);
 /*!40000 ALTER TABLE `tipelaporan_per_opd` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -489,5 +489,5 @@ UNLOCK TABLES;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
-commit;
--- Dump completed on 2019-10-10  1:05:18
+COMMIT;
+-- Dump completed on 2019-10-10 12:07:15
