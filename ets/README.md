@@ -10,20 +10,23 @@ Linux Mint 19.1 Teressa 8GB 64-bit
 - Virtual Box
 - Vagrant
 - PHP 7.2
-- Apache Web Server
 - Mysql dan ProxySQL + addition_to_sys.sql
 - ProxySQL + addition_to_sys.sql (File diletakkan dalam folder 'Provision')
 - Web App ([E-Laporan](https://github.com/rtejakusuma/elaporan))
 
 ## Outline ##
-- Instalasi Requirement dan persiapan
+- Instalasi requirement dan persiapan
 - Pembuatan dan pengaturan Vagrantfile
-- Pembuatan shell script dan file konfigurasi mysql untuk provisioning
+- Pembuatan shell script dan file konfigurasi MySQL untuk provisioning
 - Pembuatan SQL script untuk pengaturan group replication
 - Pembuatan SQL script untuk pengaturan ProxySQL
 - Pengaturan Web App
+- Pembuatan VM menggunakan Vagrant
+- Bootstrapping basis data pada server
+- Pengaturan ProxySQL
+- Menjalankan Web Server
 
-## Instalasi Requirement dan persiapan ##
+## Instalasi Requirement dan Persiapan ##
 - Virtual Box
  ```bash
 sudo apt-get install virtualbox
@@ -35,10 +38,6 @@ sudo apt-get install vagrant
 - PHP 7.2
  ```bash
 sudo apt-get install php7.2
- ```
-- Apache Web Server
- ```bash
-sudo apt install apache2 libapache2-mod-php7.2 
  ```
 - Mysql dan ProxySQL + addition_to_sys.sql (File diletakkan dalam folder 'Provision')
  ```bash
@@ -425,7 +424,7 @@ $db['bdt'] = array(
 );
 ```
 
-Ubah active_group pada file yang sama ke bdt.
+Ubah variabel $active_group pada file yang sama menjadi bdt.
 ```php
 ...
 $active_group = 'bdt';
@@ -434,3 +433,52 @@ $query_builder = TRUE;
 $db['bdt'] = array(
 ...
 ```
+
+## Pembuatan VM Menggunakan Vagrant ##
+Buat VM dengan menjalankan perintah berikut.
+```bash
+vagrant up
+```
+
+Jika proses pembuatan VM sudah selesai lanjutkan ke bagian "Bootstrapping Basis Data pada Server".
+
+## Bootstrapping Basis Data pada Server ##
+Lakukan ssh ke salah satu database server (server1 / server2 / server3), pada contoh ini digunakan server1, menggunakan perintah
+```bash
+vagrant ssh server1
+```
+
+Tambahkan akun user yang akan digunakan untuk replikasi dan lakukan instalasi group replication plugin.
+```bash
+sudo mysql -u root -padmin < /vagrant/provision/cluster_bootstrap_setting.sql
+```
+
+Database server pertama akan digunakan untuk bootstrap group replication dengan menjalankan perintah
+```bash
+sudo mysql -u root -padmin < /vagrant/provision/start_replication_bootstrap.sql
+```
+
+Jalankan file addition_to_sys.sql dan tambahkan user yang akan digunakan oleh ProxySQL ke server1.
+```bash
+sudo mysql -u root -padmin < /vagrant/provision/addition_to_sys.sql
+sudo mysql -u root -padmin < /vagrant/provision/db_proxy_user.sql
+```
+
+Karena server1 telah digunakan sebagai bootstrap group replication, untuk server2 dan server3 cukup menjalankan perintah untuk memulai group replication.
+```bash
+sudo mysql -u root -padmin < /vagrant/provision/start_replication.sql
+```
+
+## Pengaturan ProxySQL ##
+Pada server ProxySQL tambahkan user yang akan digunakan untuk mengakses database server beserta pengaturan MySQL server yang terhubung ke ProxySQL.
+```bash
+sudo mysql -u admin -padmin -h 127.0.0.1 -P 6032 < /vagrant/provision/proxy.sql
+```
+
+## Menjalankan Web Server ##
+Pada pengujian ini PHP digunakan sebagai web server (hanya untuk local). Jalankan perintah berikut pada direktori web app.
+```bash
+php -S localhost:8000
+```
+
+Web app dapat diakses menggunakan localhost:8000.
