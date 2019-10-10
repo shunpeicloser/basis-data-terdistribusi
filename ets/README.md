@@ -464,6 +464,11 @@ sudo mysql -u root -padmin < /vagrant/provision/addition_to_sys.sql
 sudo mysql -u root -padmin < /vagrant/provision/db_proxy_user.sql
 ```
 
+Masukkan basis data dari web app.
+```ssh
+sudo mysql -u root -padmin < /vagrant/provision/cluster_bootstrap_db.sql
+```
+
 Karena server1 telah digunakan sebagai bootstrap group replication, untuk server2 dan server3 cukup menjalankan perintah untuk memulai group replication.
 ```bash
 sudo mysql -u root -padmin < /vagrant/provision/start_replication.sql
