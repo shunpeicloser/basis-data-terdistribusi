@@ -20,7 +20,7 @@ Linux Mint 19.1 Teressa 8GB 64-bit
 - Pembuatan shell script dan file konfigurasi MySQL untuk provisioning
 - Pembuatan SQL script untuk pengaturan group replication
 - Pembuatan SQL script untuk pengaturan ProxySQL
-- Pengaturan Web App
+- Mengenai Web App E-laporan dan Pengaturan Web App
 - Pembuatan VM menggunakan Vagrant
 - Bootstrapping basis data pada server
 - Pengaturan ProxySQL
@@ -130,6 +130,8 @@ sys.gr_applier_queue_length() as transactions_behind, Count_Transactions_in_queu
 DELIMITER ;
  ```
 - Web App: E-Laporan
+
+Repositori Web app asal. Web App dengan konfigurasi yang sesuai untuk implementasi ini disimpan dalam direktori elaporan repositori ini.
  ```bash
 git clone https://github.com/rtejakusuma/elaporan.git
  ```
@@ -331,7 +333,12 @@ bind-address = "192.168.16.16" # Change according to which server is used
 report_host = "192.168.16.16" # Change according to which server is used
 loose-group_replication_local_address = "192.168.16.16:33061" # Change according to which server is used
 ```
+
+loose-group_replication_group_name didapatkan dengan menjalankan perintah ```uuid``` pada terminal linux.
+
 ## Pembuatan SQL Script untuk Pengaturan Group Replication ##
+Dilakukan pembuatan user yang digunakan untuk melakukan replikasi dan melakukan instalasi plugin group replication.
+
 File cluster_bootstrap_setting.sql:
 ```sql
 SET SQL_LOG_BIN=0;
@@ -342,6 +349,7 @@ SET SQL_LOG_BIN=1;
 CHANGE MASTER TO MASTER_USER='repl', MASTER_PASSWORD='password' FOR CHANNEL 'group_replication_recovery';
 INSTALL PLUGIN group_replication SONAME 'group_replication.so';
 ```
+Pada keadaan dimana tidak ada node dalam group replication yang menyala, dijalankan group replication bootstrap yang diikuti dengan perintah untuk memulai group replication. Group replication bootstrap dihentikan setelah group replication berjalan.
 
 File start_replication_bootstrap.sql:
 ```sql
@@ -349,11 +357,13 @@ SET GLOBAL group_replication_bootstrap_group=ON;
 START group_replication;
 SET GLOBAL group_replication_bootstrap_group=OFF;
 ```
+Pada node selain node pertama cukup dijalankan perintah untuk menjalankan group replication.
 
 File start_replication.sql:
 ```sql
 START group_replication;
 ```
+Buat user yang akan digunakan oleh ProxySQL untuk melakukan monitor dan mengakses basis data ke database server1 hingga server3.
 
 File db_proxy_user:
 ```sql
@@ -368,6 +378,8 @@ FLUSH PRIVILEGES;
 ```
 
 ## Pembuatan SQL Script untuk Pengaturan ProxySQL ##
+Pada proxy server, buat akun admin, monitor, dan user database yang diinginkan. Selain itu masukkan alamat dari database server yang akan dihubungkan ke ProxySQL.
+
 File proxy.sql:
 ```sql
 UPDATE global_variables SET variable_value='admin:admin'
@@ -398,8 +410,10 @@ LOAD MYSQL USERS TO RUNTIME;
 SAVE MYSQL USERS TO DISK;
 ```
 
-## Pengaturan Web App ##
-File database.php (dalam direktori config) tambahkan pengaturan sebagai berikut.
+## Mengenai Web App E-Laporan dan Pengaturan Web App ##
+Web App E-Laporan merupakan aplikasi yang akan digunakan untuk melakukan pemusatan laporan seluruh perangkat daerah Kota Madiun. Perangkat daerah dapat membuat laporan yang diinginkan dengan mengisikan data yang diperlukan dan dapat menyimpan laporan yang telah dibuat. Sedangkan administrator web dapat mendaftarkan akun baru, mengubah kata sandi dari akun yang sudah ada, dan menetapkan jenis laporan yang dapat dibuat oleh perangkat daerah.
+
+Pengimplementasian web app dengan basis data terdistribusi ini dapat dilakukan dengan melakukan pengubahan hostname, username, password, dan database dalam File database.php (dalam direktori config).
 ```php
 $db['bdt'] = array(
 	'dsn'	=> '',
@@ -469,7 +483,7 @@ Masukkan basis data dari web app.
 sudo mysql -u root -padmin < /vagrant/provision/cluster_bootstrap_db.sql
 ```
 
-Karena server1 telah digunakan sebagai bootstrap group replication, untuk server2 dan server3 cukup menjalankan perintah untuk memulai group replication.
+Karena server1 telah digunakan sebagai bootstrap group replication, untuk server2 dan server3 cukup menjalankan perintah berikut.
 ```bash
 sudo mysql -u root -padmin < /vagrant/provision/start_replication.sql
 ```
