@@ -20,7 +20,7 @@ START TRANSACTION;
 --
 
 DROP DATABASE IF EXISTS `elaporan`;
-CREATE DATABASE IF EXISTS `elaporan`;
+CREATE DATABASE IF NOT EXISTS `elaporan`;
 USE `elaporan`;
 
 DROP TABLE IF EXISTS `detail_laporan_kinerja_triwulan`;
