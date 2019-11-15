@@ -17,9 +17,9 @@ sleep 20;
 
 sudo docker exec -d -it shard-1 mongo -port 27018 --eval 'rs.initiate({ _id: "shard-1-rs", members: [{ _id: 0, host: "192.168.2.1:27018" }]})';
 
-sudo docker exec -d -it shard-2 mongo -port 27018 --eval 'rs.initiate({ _id: "shard-2-rs", members: [{ _id: 0, host: "192.168.2.2:27018" }]})';
+sudo docker exec -d -it shard-2 mongo -port 27018 --eval 'rs.initiate({ _id: "shard-2-rs", members: [{ _id: 1, host: "192.168.2.2:27018" }]})';
 
-sudo docker exec -d -it shard-3 mongo -port 27018 --eval 'rs.initiate({ _id: "shard-3-rs", members: [{ _id: 0, host: "192.168.2.3:27018" }]})';
+sudo docker exec -d -it shard-3 mongo -port 27018 --eval 'rs.initiate({ _id: "shard-3-rs", members: [{ _id: 2, host: "192.168.2.3:27018" }]})';
 
 sudo docker run -d --rm --net mdbnet --ip 192.168.0.2 -p 27017:27017 --name router --hostname router mongo:4.2 mongos --configdb config-conf/192.168.1.1:27019,192.168.1.2:27019 --bind_ip_all;
 
@@ -29,7 +29,7 @@ sudo docker exec -d -it router mongo --eval 'sh.addShard("shard-1-rs/192.168.2.1
 
 sudo docker exec -d -it router mongo --eval 'use hate_crime_india;';
 
-sudo docker exec -d -it router mongo --eval 'sh.enableSharding("hate_crime_india"); db.createCollection("crime_by_district"); sh.shardCollection("hate_crime_india.crime_by_district", {"STATE": 1});';
+sudo docker exec -d -it router mongo --eval 'sh.enableSharding("hate_crime_india"); db.createCollection("crime_by_district"); sh.shardCollection("hate_crime_india.crime_by_district", {"STATE": "hashed"});';
 
 # open terminal foreach instance
 #gnome-terminal -- /bin/sh -c sudo docker exec -it config-1 bash'
