@@ -1,5 +1,19 @@
 <?php
     require_once("./db.php");
+    $data = $collection->find();
+    $data = $data->toArray();
+    $numOfData = sizeof($data);
+    $fieldName = array();
+    foreach($data[0] as $key => $fd){
+	if($key == "_id")
+            continue;
+	array_push($fieldName, $key);
+    }
+    $state = [];
+    foreach($collection->distinct("STATE") as $statename){
+        $state[$statename] = NULL;
+    }
+    var_dump($state);
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -10,12 +24,17 @@
     <title>Hate Crime in India</title>
 </head>
 <body>
-    <!-- <center>
-        <h1>Hate Crime in India: Crime by District</h1>
-        <a href="./create.php"><button style="width:200px; height:100px; font-size:40px; padding: 0; margin:20px;">Create</button></a>
-        <a href="./read.php"><button style="width:200px; height:100px; font-size:40px; padding: 0; margin:20px;">Read</button></a> <br/>
-        <a href="./update.php"><button style="width:200px; height:100px; font-size:40px; padding: 0; margin:20px;">Update</button></a>
-        <a href="./delete.php"><button style="width:200px; height:100px; font-size:40px; padding: 0; margin:20px;">Delete</button></a> <br/>
-    </center> -->
+    <h1>Number of Data: <?php echo $numOfData; ?></h1>
+    <h2>Summary</h2>
+    <table>
+	<tr>
+            <?php
+                foreach($fieldName as $field){
+		    echo "<th>$field</th>";
+		}
+            ?>
+
+        </tr>
+    </table>
 </body>
 </html>
