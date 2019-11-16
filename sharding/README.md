@@ -7,7 +7,9 @@ Linux Mint 19.1 Teressa 8GB 64-bit
 
 ## Requirements ##
 - Docker
-- PHP 7.2
+- MongoDB Docker Image
+- PHP 7.4-dev
+- MongoDB PHP Extension versi 1.6+
 
 ## Outline ##
 - Instalasi requirement dan persiapan
@@ -18,13 +20,24 @@ Linux Mint 19.1 Teressa 8GB 64-bit
  ```bash
 sudo apt-get install docker-engine
  ```
-- PHP 7.2
- ```bash
-sudo apt-get install php7.2
- ```
 - MongoDB Docker Image
  ```bash
 sudo docker pull mongo:4.2
+ ```
+- PHP 7.4-dev
+ ```bash
+sudo apt-get install php7.4-dev
+ ```
+ - MongoDB PHP Extension versi 1.6+
+ ```bash
+wget https://pecl.php.net/get/mongodb-1.6.0.tgz
+tar zxf mongodb-1.6.0.tgz -C /tmp
+cd /tmp/mongodb-1.6.0
+phpize7.4
+./configure
+sudo make all
+sudo make install
+
  ```
 
 ## Menjalankan MongoDB Docker ##
