@@ -2,7 +2,7 @@
     require_once("./db.php");
     $data = $collection->find();
     $data = $data->toArray();
-    $current = $data[0];//rand(0, sizeof($data)-1)];
+    $current = $data[rand(0, sizeof($data)-1)];
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -21,7 +21,6 @@
     <h2>Data</h2>
     <form action="action.php" method="post">
         <input type="hidden" readonly name="action" value="update">
-        <input type="hidden" readonly name="_id" value="<?php echo $current['_id']; ?>"> <br/>
         State <input type="text" name="data[STATE]" readonly value="<?php echo $current["STATE"]; ?>"> <br/>
         District <input type="text" name="data[DISTRICT]" readonly value="<?php echo $current["DISTRICT"]; ?>"> <br/>
         Year <input type="text" name="data[Year]" readonly value="<?php echo $current["Year"]; ?>"> <br/>

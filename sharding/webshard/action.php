@@ -2,7 +2,6 @@
     require_once("./db.php");
 
     $action = $_POST['action'];
-    $id = $_POST['_id'];
     $data = $_POST['data'];
 
     $data['Year'] = intval($data['Year']);
@@ -25,7 +24,13 @@
         );
         var_dump($res->getMatchedCount(),$res->getModifiedCount());
     } else if($action == "create") {
-
+        $res = $collection->insertOne(
+            $data
+        );
+        var_dump($res->getInsertedId());
     } else if($action == "delete") {
-
+        $res = $collection->deleteOne(
+            ['STATE' => $data['STATE'], 'DISTRICT' => $data['DISTRICT'], 'Year' => $data['Year']]
+        );
+        var_dump( $res->getDeletedCount() );
     }
