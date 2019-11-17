@@ -5,9 +5,21 @@ from pprint import pprint
 
 class Dataset:
     def __init__(self, filename):
+        self.data = []
         with open(filename) as csvfile:
             reader = csv.DictReader(csvfile)
-            self.data = list(reader)
+            for row in reader:
+                row['Year'] = int(row['Year'])
+                row['Murder'] = int(row['Murder'])
+                row['Assault on women'] = int(row['Assault on women'])
+                row['Kidnapping and Abduction'] = int(row['Kidnapping and Abduction'])
+                row['Robbery'] = int(row['Robbery'])
+                row['Arson'] = int(row['Arson'])
+                row['Hurt'] = int(row['Hurt'])
+                row['Prevention of atrocities (POA) Act'] = int(row['Prevention of atrocities (POA) Act'])
+                row['Protection of Civil Rights (PCR) Act'] = int(row['Protection of Civil Rights (PCR) Act'])
+                row['Other Crimes Against SCs'] = int(row['Other Crimes Against SCs'])
+                self.data.append(row)
 
 class MongoProxy:
     def __init__(self, db, phost="localhost", pport=27017):
