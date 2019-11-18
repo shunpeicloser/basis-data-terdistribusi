@@ -38,7 +38,11 @@ phpize7.4
 sudo make all
 sudo make install
  ```
-
+- Menambahkan driver php-mongodb di direktori project (dalam hal ini direktori webshard)
+```bash
+cd /path/to/project/webshard
+composer require mongodb/mongodb
+```
 ## Menjalankan MongoDB Docker ##
 - Membuat Docker Network
 ```bash
