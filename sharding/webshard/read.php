@@ -1,8 +1,18 @@
 <?php
     require_once("./db.php");
-    $data = $collection->find();
-    $data = $data->toArray();
-    $numOfData = sizeof($data);
+    // $data = $collection->find();
+    // $data = $data->toArray();
+    // $numOfData = sizeof($data);
+    $numOfData = $collection->aggregate([
+        [
+            '$group' => [
+                '_id' => 'null',
+                'num' => ['$sum' => 1]
+            ]
+        ]
+
+    ])->toArray()[0]['num'];
+    // var_dump($numOfData); die();
     $summary = array();
 
     array_push($summary, $collection->aggregate([

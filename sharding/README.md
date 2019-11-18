@@ -1,6 +1,6 @@
 # Implementasi MongoDB Sharding #
 ## Topology ##
-
+![topologi](Topologi.png)
 
 ## Development Environment ##
 Linux Mint 19.1 Teressa 8GB 64-bit
@@ -54,7 +54,9 @@ sudo docker run -d --rm --net mdbnet --ip 192.168.1.1 -p 37019:27019 --name conf
 
 sudo docker run -d --rm --net mdbnet --ip 192.168.1.2 -p 37029:27019 --name config-2 --hostname config-2 mongo:4.2 --replSet config-conf --configsvr;
 ```
-**Keterangan: port 27019 adalah default port untuk config server MongoDB**
+**Keterangan:**
+- port 27019 adalah default port untuk config server MongoDB
+- hapus parameter ```--rm``` jika tidak ingin menghapus MongoDB instance setelah instance dihentikan.
 
 - Melakukan inisiasi Replica Set untuk config server (Jalankan hanya pada satu config server yang akan digunakan sebagai master)
 ```bash
@@ -69,7 +71,9 @@ sudo docker run -d --rm --net mdbnet --ip 192.168.2.2 -p 47028:27018 --name shar
 
 sudo docker run -d --rm --net mdbnet --ip 192.168.2.3 -p 47038:27018 --name shard-3 --hostname shard-3 mongo:4.2 --replSet shard-3-rs --shardsvr;
 ```
-**Keterangan: port 27018 adalah default port untuk shard server MongoDB**
+**Keterangan:**
+- port 27018 adalah default port untuk shard server MongoDB
+- hapus parameter ```--rm``` jika tidak ingin menghapus MongoDB instance setelah instance dihentikan.
 
 - Melakukan inisiasi Replica Set untuk masing-masing shard server.
 ```bash
@@ -84,6 +88,8 @@ sudo docker exec -d -it shard-3 mongo -port 27018 --eval 'rs.initiate({ _id: "sh
 ```bash
 sudo docker run -d --rm --net mdbnet --ip 192.168.0.2 -p 27017:27017 --name router --hostname router mongo:4.2 mongos --configdb config-conf/192.168.1.1:27019,192.168.1.2:27019 --bind_ip_all;
 ```
+**Keterangan:**
+- hapus parameter ```--rm``` jika tidak ingin menghapus MongoDB instance setelah instance dihentikan.
 
 - Expose shard server ke router
 ```bash
@@ -111,3 +117,78 @@ php -S localhost:50001
 ```
 
 - Aplikasi web dapat diakses melalui peramban dengan alamat http://localhost:50001.
+
+## Contoh Pengaplikasian CRUD pada Webshard ##
+- Create
+    - memasukkan data
+    ![create image](create-1.png)
+    - data berhasil dimasukkan
+    ![create image](create-2.png)
+```php
+$res = $collection->insertOne(
+            $data
+        );
+```
+
+- Read (sekaligus agregasi sum)
+    - proses membaca seluruh data dan menampilkan jumlahan kasus untuk tiap tahun tiap district tiap state serta jumlah seluruh data yang ada.
+    ![read image](read-1.png)
+```php
+// count aggregation
+$numOfData = $collection->aggregate([
+        [
+            '$group' => [
+                '_id' => 'null',
+                'num' => ['$sum' => 1]
+            ]
+        ]
+
+    ])->toArray()[0]['num'];
+
+// sum aggregation
+array_push($summary, $collection->aggregate([
+        [
+            '$group' => [
+                '_id'   => ['state' => '$STATE', 'year' => '$Year'],
+                'Murder' => ['$sum' => '$Murder'],
+                'Assault on women' => ['$sum' => '$Assault on women'],
+                'Kidnapping and Abduction' => ['$sum' => '$Kidnapping and Abduction'],
+                'Robbery' => ['$sum' => '$Robbery'],
+                'Arson' => ['$sum' => '$Arson'],
+                'Hurt' => ['$sum' => '$Hurt'],
+                'Prevention of atrocities (POA) Act' => ['$sum' => '$Prevention of atrocities (POA) Act'],
+                'Protection of Civil Rights (PCR) Act' => ['$sum' => '$Protection of Civil Rights (PCR) Act'],
+                'Other Crimes Against SCs' => ['$sum' => '$Other Crimes Against SCs']
+            ]
+        ]
+    ])->toArray() );
+```
+
+- Update
+    - data yang akan di-update (BIHAR - BETTIAH - 2011)
+    ![update image](update-1.png)
+    - data sebelum di-update
+    ![update image](update-2.png)
+    - data yang di-update (Murder: 0 > 100)
+    ![update image](update-3.png)
+    - data yang telah ter-update
+    ![update image](update-4.png)
+```php
+$res = $collection->updateOne(
+            ['STATE' => $data['STATE'], 'DISTRICT' => $data['DISTRICT'], 'Year' => $data['Year']],
+            ['$set' => $data]
+        );
+```
+
+- Delete
+    - data yang akan dihapus (UTTAR PRADESH - RAIBAREILLY - 2004)
+    ![delete image](delete-1.png)
+    - data sebelum dihapus
+    ![delete image](delete-2.png)
+    - data sesudah dihapus
+    ![delete image](delete-3.png)
+```php
+$res = $collection->deleteOne(
+            ['STATE' => $data['STATE'], 'DISTRICT' => $data['DISTRICT'], 'Year' => $data['Year']]
+        );
+```
