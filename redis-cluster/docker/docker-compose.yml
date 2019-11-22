@@ -1,0 +1,112 @@
+
+networks:
+  redisnet:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 192.169.16.0/24
+
+services:
+  node-1:
+    image: bitnami/redis
+    container-name: node-1
+    hostname: node-1
+    environment:
+      REDIS_REPLICATION_MODE: master
+      REDISCLI_AUTH: masterpass
+      REDIS_PASSWORD: masterpass
+    networks:
+      redisnet:
+        ipv4_address: 192.169.16.17
+
+  node-2:
+    image: bitnami/redis
+    container-name: node-2
+    hostname: node-2
+    environment:
+      REDIS_REPLICATION_MODE: slave
+      REDIS_MASTER_HOST: 192.169.16.17
+      REDIS_MASTER_PORT_NUMBER: 6379
+      REDIS_MASTER_PASSWORD: masterpass
+      REDIS_PASSWORD: slavepass
+      REDISCLI_AUTH: slavepass
+    depends_on:
+      - node-1
+    networks:
+      redisnet:
+        ipv4_address: 192.169.16.18
+
+  node-3:
+    image: bitnami/redis
+    container-name: node-3
+    hostname: node-3
+    environment:
+      REDIS_REPLICATION_MODE: slave
+      REDIS_MASTER_HOST: 192.169.16.17
+      REDIS_MASTER_PORT_NUMBER: 6379
+      REDIS_MASTER_PASSWORD: masterpass
+      REDIS_PASSWORD: slavepass
+      REDISCLI_AUTH: slavepass
+    depends_on:
+      - node-1
+    networks:
+      redisnet:
+        ipv4_address: 192.169.16.19
+
+  sentinel-1:
+    image: bitnami/redis-sentinel
+    container: sentinel
+    hostname: sentinel
+    environtment:
+      REDIS_MASTER_HOST: 192.169.16.17
+      REDIS_MASTER_PORT_NUMBER: 6379
+      REDIS_MASTER_PASSWORD: masterpass
+      REDIS_SENTINEL_QUORUM: 2
+    depends_on:
+      - node-1
+    networks:
+      redisnet:
+        ipv4_address: 192.169.16.20
+
+  sentinel-2:
+    image: bitnami/redis-sentinel
+    container: sentinel
+    hostname: sentinel
+    environtment:
+      REDIS_MASTER_HOST: 192.169.16.17
+      REDIS_MASTER_PORT_NUMBER: 6379
+      REDIS_MASTER_PASSWORD: masterpass
+      REDIS_SENTINEL_QUORUM: 2
+    depends_on:
+      - node-1
+    networks:
+      redisnet:
+        ipv4_address: 192.169.16.21
+  
+  sentinel-3:
+    image: bitnami/redis-sentinel
+    container: sentinel
+    hostname: sentinel
+    environtment:
+      REDIS_MASTER_HOST: 192.169.16.17
+      REDIS_MASTER_PORT_NUMBER: 6379
+      REDIS_MASTER_PASSWORD: masterpass
+      REDIS_SENTINEL_QUORUM: 2
+    depends_on:
+      - node-1
+    networks:
+      redisnet:
+        ipv4_address: 192.169.16.22
+
+  # wordpress:
+  #   image: wordpress:5.3.0-fpm-alpine
+  #   container: wordpress
+  #   hostname: wordpress
+  #   ports:
+  #     - 50001:80
+  #   depends_on:
+  #     - sentinel-1
+  #     - sentinel-2
+  #   networks:
+  #     redisnet:
+  #       ipv4_address: 192.169.16.16
