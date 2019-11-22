@@ -10,6 +10,7 @@ sudo docker run -d --rm \
     -e REDIS_REPLICATION_MODE=master \
     -e REDISCLI_AUTH=masterpass \
     -e REDIS_PASSWORD=masterpass \
+    -e ALLOW_EMPTY_PASSWORD=yes \
     bitnami/redis;
 
 sleep 3;
@@ -26,6 +27,7 @@ sudo docker run -d --rm \
     -e REDIS_MASTER_PASSWORD=masterpass \
     -e REDIS_PASSWORD=slavepass \
     -e REDISCLI_AUTH=slavepass \
+    -e ALLOW_EMPTY_PASSWORD=yes \
     bitnami/redis;
 
 sudo docker run -d --rm \
@@ -40,6 +42,7 @@ sudo docker run -d --rm \
     -e REDIS_MASTER_PASSWORD=masterpass \
     -e REDIS_PASSWORD=slavepass \
     -e REDISCLI_AUTH=slavepass \
+    -e ALLOW_EMPTY_PASSWORD=yes \
     bitnami/redis;
 
 sleep 3;
@@ -80,3 +83,34 @@ sudo docker run -d --rm \
     -e REDIS_SENTINEL_QUORUM=2 \
     bitnami/redis-sentinel;
 
+sudo docker run -d --rm \
+    --net redis \
+    --ip 192.169.16.23 \
+    -p 33060:3306 \
+    --name mysql \
+    --hostname mysql \
+    -e MYSQL_ROOT_PASSWORD=root \
+    -e MYSQL_USER=dbuser \
+    -e MYSQL_PASSWORD=dbpassword \
+    -e MYSQL_DATABASE=redistest \
+    mysql:5.7;
+
+sleep 30;
+
+sudo docker run -d --rm \
+    --net redis \
+    --ip 192.169.16.24 \
+    -p 50001:80 \
+    --name wordpress \
+    --hostname wordpress \
+    -e WORDPRESS_DB_HOST=192.169.16.23 \
+    -e WORDPRESS_DB_USER=dbuser \
+    -e WORDPRESS_DB_PASSWORD=dbpassword \
+    -e WORDPRESS_DB_NAME=redistest \
+    -e WORDPRESS_CONFIG_EXTRA='define("WP_REDIS_CLIENT", "predis");
+                               define("WP_REDIS_SENTINEL", "mymaster");
+                               define("WP_REDIS_SERVERS",
+                                          ["tcp://192.169.16.20:26379?alias=sentinel-1",
+                                           "tcp://192.169.16.21:26379?alias=sentinel-2",
+                                           "tcp://192.169.16.22:26379?alias=sentinel-3"]);' \
+    wordpress:5.3.0-apache;
