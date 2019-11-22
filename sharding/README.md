@@ -137,12 +137,8 @@ $res = $collection->insertOne(
 // count aggregation
 $numOfData = $collection->aggregate([
         [
-            '$group' => [
-                '_id' => 'null',
-                'num' => ['$sum' => 1]
-            ]
+            '$count' => 'num'
         ]
-
     ])->toArray()[0]['num'];
 
 // sum aggregation
