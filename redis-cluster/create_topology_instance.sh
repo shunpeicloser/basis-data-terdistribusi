@@ -113,7 +113,7 @@ sudo docker exec -it wordpress sed -i "s/return 'INFO'/return 'info'/g" /var/www
 sudo docker run -d --rm \
     --net redis \
     --ip 192.169.16.25 \
-    -p 50001:80 \
+    -p 40001:80 \
     --name wordpress-nr \
     --hostname wordpress \
     -e WORDPRESS_DB_HOST=192.169.16.23 \
