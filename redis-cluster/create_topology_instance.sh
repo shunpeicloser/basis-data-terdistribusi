@@ -106,6 +106,10 @@ sudo docker run -d --rm \
                                define("WP_CACHE", true);' \
     wordpress:5.3.0-apache;
 
+sleep 20;
+
+sudo docker exec -it wordpress sed -i "s/return 'INFO'/return 'info'/g" /var/www/html/wp-content/plugins/redis-cache/includes/predis/src/Command/ServerInfo.php;
+
 sudo docker run -d --rm \
     --net redis \
     --ip 192.169.16.25 \
