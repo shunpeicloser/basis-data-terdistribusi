@@ -1,7 +1,7 @@
-# Implementasi MongoDB Sharding #
+# Implementasi Redis Cluster untuk Caching pada Wordpress #
 ## Topology ##
 ![topologi](topologi.png)
-**Keterangan: wordpress-nr adalah docker instance wordpress yang tidak menggunakan Redis Object Cache**
+- **Keterangan: wordpress-nr adalah docker instance wordpress yang tidak menggunakan Redis Object Cache**
 
 ## Development Environment ##
 Linux Mint 19.1 Teressa 8GB 64-bit
@@ -36,7 +36,7 @@ sudo apt install openjdk-8-jre-headless;
 
 - Apache JMeter
 ```bash
-sudo wget https://www-eu.apache.org/dist//jmeter/binaries/apache-jmeter-5.2.tgz;
+sudo wget https://www-eu.apache.org/dist/jmeter/binaries/apache-jmeter-5.2.tgz;
 tar zxf apache-jmeter-5.2.tgz -C /home/[user]/
 ```
 
