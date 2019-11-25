@@ -185,13 +185,7 @@ cd /home/[user]/apache-jmeter-5.2/bin;
 java -jar ApacheJMeter.jar
 ```
 
-- Pengaturan Uji Coba JMeter untuk Wordpress dengan Redis Object Cache
-![1](jmeter-http-request-redis.png)
-
-- Pengaturan Uji Coba JMeter untuk Wordpress tanpa Redis Object Cache
-![2](jmeter-http-request-noredis.png)
-
-- Hasil Uji Coba JMeter untuk Wordpress dengan Redis Object Cache
+- Hasil Uji Coba JMeter untuk Wordpress dengan Redis Object Cache: 50 koneksi
 ![3](jmeter-summary-redis.png)
 
 - Hasil Uji Coba JMeter untuk Wordpress tanpa Redis Object Cache
