@@ -1,7 +1,7 @@
 # Implementasi MongoDB Sharding #
 ## Topology ##
 ![topologi](topologi.png)
-**Keterangan: wordpress-nr adalah docker instance wordpress yang tidak menggunakan Redis Object Cache**
+- **Keterangan: wordpress-nr adalah docker instance wordpress yang tidak menggunakan Redis Object Cache**
 
 ## Development Environment ##
 Linux Mint 19.1 Teressa 8GB 64-bit
