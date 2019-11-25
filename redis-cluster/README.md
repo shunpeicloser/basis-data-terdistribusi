@@ -1,4 +1,4 @@
-# Implementasi MongoDB Sharding #
+# Implementasi Redis Cluster untuk Caching pada Wordpress #
 ## Topology ##
 ![topologi](topologi.png)
 - **Keterangan: wordpress-nr adalah docker instance wordpress yang tidak menggunakan Redis Object Cache**
