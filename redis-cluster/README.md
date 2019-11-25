@@ -185,8 +185,22 @@ cd /home/[user]/apache-jmeter-5.2/bin;
 java -jar ApacheJMeter.jar
 ```
 
-- Hasil Uji Coba JMeter untuk Wordpress dengan Redis Object Cache: 50 koneksi
-![3](jmeter-summary-redis.png)
+Data halaman wordpress yang digunakan: [File](bdtredis.WordPress.2019-11-25.xml)
 
-- Hasil Uji Coba JMeter untuk Wordpress tanpa Redis Object Cache
-![4](jmeter-summary-noredis.png)
+- Hasil Uji Coba JMeter untuk Wordpress dengan Redis Object Cache: 50 koneksi
+![3](3.png)
+
+- Hasil Uji Coba JMeter untuk Wordpress tanpa Redis Object Cache: 50 koneksi
+![4](4.png)
+
+- Hasil Uji Coba JMeter untuk Wordpress dengan Redis Object Cache: 116 koneksi
+![3](5.png)
+
+- Hasil Uji Coba JMeter untuk Wordpress tanpa Redis Object Cache: 116 koneksi
+![4](6.png)
+
+- Hasil Uji Coba JMeter untuk Wordpress dengan Redis Object Cache: 216 koneksi
+![3](7.png)
+
+- Hasil Uji Coba JMeter untuk Wordpress tanpa Redis Object Cache: 216 koneksi
+![4](8.png)
