@@ -36,7 +36,7 @@ sudo apt install openjdk-8-jre-headless;
 
 - Apache JMeter
 ```bash
-sudo wget https://www-eu.apache.org/dist//jmeter/binaries/apache-jmeter-5.2.tgz;
+sudo wget https://www-eu.apache.org/dist/jmeter/binaries/apache-jmeter-5.2.tgz;
 tar zxf apache-jmeter-5.2.tgz -C /home/[user]/
 ```
 
