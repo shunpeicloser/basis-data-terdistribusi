@@ -97,3 +97,37 @@ sudo docker run -d \
     pingcap/tidb:latest \
     --store=tikv \
     --path="192.170.16.19:2379,192.170.16.20:2379,192.170.16.21:2379";
+
+# copy node_exporter to node to be monitored
+sudo docker cp ./prometheus/node_exporter-0.18.1.linux-amd64/node_exporter pd1:/;
+sudo docker cp ./prometheus/node_exporter-0.18.1.linux-amd64/node_exporter pd2:/;
+sudo docker cp ./prometheus/node_exporter-0.18.1.linux-amd64/node_exporter pd3:/;
+sudo docker cp ./prometheus/node_exporter-0.18.1.linux-amd64/node_exporter tikv1:/;
+sudo docker cp ./prometheus/node_exporter-0.18.1.linux-amd64/node_exporter tikv2:/;
+sudo docker cp ./prometheus/node_exporter-0.18.1.linux-amd64/node_exporter tikv3:/;
+
+# run node_exporter
+sudo docker exec -d -it pd1 ./node_exporter;
+sudo docker exec -d -it pd2 ./node_exporter;
+sudo docker exec -d -it pd3 ./node_exporter;
+sudo docker exec -d -it tikv1 ./node_exporter;
+sudo docker exec -d -it tikv2 ./node_exporter;
+sudo docker exec -d -it tikv3 ./node_exporter;
+
+sudo docker run -d \
+    --name prom \
+    --net fpnet \
+    --ip 192.170.16.23 \
+    -p 9090:9090 \
+    -v "/home/miris/Kuliah/7th Story/basis-data-terdistribusi/fp/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml" \
+    prom/prometheus \
+    --config.file=/etc/prometheus/prometheus.yml;
+
+sleep 5;
+
+sudo docker run -d \
+    --name grafana \
+    --net fpnet \
+    --ip 192.170.16.24 \
+    -p 3000:3000 \
+    grafana/grafana;

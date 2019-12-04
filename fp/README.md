@@ -10,12 +10,13 @@
 ## Requirements ##
 - Docker
 - TiDB, TiKV, PD, Prometheus, dan Grafana Docker Image
+- Node Exporter
 - Apache JMeter (+ Java JDK)
 - Sysbench
 
 ## Outline ##
 - Instalasi requirement dan persiapan
-- Menjalankan TiDB, TiKV, PD, Prometheus, dan Grafana Docker Instance
+- Menjalankan TiDB, TiKV, PD, Prometheus, dan Grafana Docker Instance serta Node Exporter
 - Pengujian TiDB Cluster menggunakan Web App
 - Uji Performa
   - Aplikasi
@@ -28,13 +29,15 @@
  ```bash
 sudo apt-get install docker-engine
  ```
-- TiDB, TiKV, PD, Prometheus, dan Grafana Docker Image
+- TiDB, TiKV, PD, Prometheus, dan Grafana Docker Image serta Node Exporter
  ```bash
 sudo docker pull pingcap/tidb;
 sudo docker pull pingcap/tikv;
 sudo docker pull pingcap/pd;
 sudo docker pull prom/prometheus;
 sudo docker pull grafana/grafana;
+sudo wget https://github.com/prometheus/node_exporter/releases/download/v0.18.1/node_exporter-0.18.1.linux-amd64.tar.gz
+tar zxf node_exporter-0.18.1.linux-amd64.tar.gz -C ./prometheus/
  ```
 
 - Java JDK
@@ -162,11 +165,24 @@ sudo docker run -d \
 
 - Membuat Prometheus Instance
 ```bash
-TBD
+sudo docker run -d \
+    --name prom \
+    --net fpnet \
+    --ip 192.170.16.23 \
+    -p 9090:9090 \
+    -v "/home/miris/Kuliah/7th Story/basis-data-terdistribusi/fp/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml" \
+    prom/prometheus \
+    --config.file=/etc/prometheus/prometheus.yml;
 ```
+File [prometheus.yml](prometheus/prometheus.yml) digunakan sebagai config file dari prometheus.
 
 - Membuat Grafana Instance
 ```bash
-TBD
+sudo docker run -d \
+    --name grafana \
+    --net fpnet \
+    --ip 192.170.16.24 \
+    -p 3000:3000 \
+    grafana/grafana;
 ```
 

@@ -1,0 +1,14 @@
+global:
+  scrape_interval: 15s
+
+scrape_configs:
+  # The job name is added as a label `job=<job_name>` to any timeseries scraped from this config.
+  - job_name: 'monitor'
+    static_configs:
+      - targets:
+        - '192.170.16.16:9100'
+        - '192.170.16.17:9100'
+        - '192.170.16.18:9100'
+        - '192.170.16.19:9100'
+        - '192.170.16.20:9100'
+        - '192.170.16.21:9100'
