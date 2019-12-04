@@ -1,6 +1,66 @@
-sudo docker network create --subnet=192.170.16.0/24 fpnet;
+# Implementasi Redis Cluster untuk Caching pada Wordpress #
+## Topology ##
+![topologi](topologi.png)
+- **Keterangan: wordpress-nr adalah docker instance wordpress yang tidak menggunakan Redis Object Cache**
 
-# create placement driver
+## Development Environment ##
+- Docker Host: Linux Mint 19.1 Teressa 4GB 64-bit
+- Web App Host: Linux Mint 19.1 Teressa 8GB 64-bit
+
+## Requirements ##
+- Docker
+- TiDB, TiKV, PD, Prometheus, dan Grafana Docker Image
+- Apache JMeter (+ Java JDK)
+- Sysbench
+
+## Outline ##
+- Instalasi requirement dan persiapan
+- Menjalankan TiDB, TiKV, PD, Prometheus, dan Grafana Docker Instance
+- Pengujian TiDB Cluster menggunakan Web App
+- Uji Performa
+  - Aplikasi
+  - Basis Data
+  - Fail Over
+- Monitoring Dashboard
+
+## Instalasi Requirement dan Persiapan ##
+- Docker
+ ```bash
+sudo apt-get install docker-engine
+ ```
+- TiDB, TiKV, PD, Prometheus, dan Grafana Docker Image
+ ```bash
+sudo docker pull pingcap/tidb;
+sudo docker pull pingcap/tikv;
+sudo docker pull pingcap/pd;
+sudo docker pull prom/prometheus;
+sudo docker pull grafana/grafana;
+ ```
+
+- Java JDK
+```bash
+sudo apt install openjdk-8-jre-headless;
+```
+
+- Apache JMeter
+```bash
+sudo wget https://www-eu.apache.org/dist/jmeter/binaries/apache-jmeter-5.2.tgz;
+tar zxf apache-jmeter-5.2.tgz -C /home/[user]/
+```
+
+- Sysbench
+```bash
+
+```
+
+## Menjalankan TiDB, TiKV, PD, Prometheus, dan Grafana Docker Instance ##
+- Membuat Docker Network
+```bash
+sudo docker network create --subnet=192.170.16.0/24 fpnet;
+```
+
+- Membuat PD Instance
+```bash
 sudo docker run -d \
     --name pd1 \
     --net fpnet \
@@ -45,10 +105,10 @@ sudo docker run -d \
     --peer-urls="http://0.0.0.0:2380" \
     --advertise-peer-urls="http://192.170.16.21:2380" \
     --initial-cluster="pd1=http://192.170.16.19:2380,pd2=http://192.170.16.20:2380,pd3=http://192.170.16.21:2380";
+```
 
-sleep 10;
-
-# create cluster node
+- Membuat TiKV Instance
+```bash
 sudo docker run -d \
     --name tikv1 \
     --net fpnet \
@@ -84,9 +144,10 @@ sudo docker run -d \
     --advertise-addr="192.170.16.18:20160" \
     --data-dir="/data/tikv3" \
     --pd="192.170.16.19:2379,192.170.16.20:2379,192.170.16.21:2379";
+```
 
-sleep 10;
-
+- Membuat TiDB Instance
+```bash
 sudo docker run -d \
     --name tidb \
     --net fpnet \
@@ -97,3 +158,15 @@ sudo docker run -d \
     pingcap/tidb:latest \
     --store=tikv \
     --path="192.170.16.19:2379,192.170.16.20:2379,192.170.16.21:2379";
+```
+
+- Membuat Prometheus Instance
+```bash
+TBD
+```
+
+- Membuat Grafana Instance
+```bash
+TBD
+```
+
