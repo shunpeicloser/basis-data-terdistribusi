@@ -163,6 +163,23 @@ sudo docker run -d \
     --path="192.170.16.19:2379,192.170.16.20:2379,192.170.16.21:2379";
 ```
 
+- Menambahkan dan menjalankan node_exporter ke docker instance yang akan dimonitor
+```bash
+sudo docker cp ./prometheus/node_exporter-0.18.1.linux-amd64/node_exporter pd1:/;
+sudo docker cp ./prometheus/node_exporter-0.18.1.linux-amd64/node_exporter pd2:/;
+sudo docker cp ./prometheus/node_exporter-0.18.1.linux-amd64/node_exporter pd3:/;
+sudo docker cp ./prometheus/node_exporter-0.18.1.linux-amd64/node_exporter tikv1:/;
+sudo docker cp ./prometheus/node_exporter-0.18.1.linux-amd64/node_exporter tikv2:/;
+sudo docker cp ./prometheus/node_exporter-0.18.1.linux-amd64/node_exporter tikv3:/;
+
+sudo docker exec -d -it pd1 ./node_exporter;
+sudo docker exec -d -it pd2 ./node_exporter;
+sudo docker exec -d -it pd3 ./node_exporter;
+sudo docker exec -d -it tikv1 ./node_exporter;
+sudo docker exec -d -it tikv2 ./node_exporter;
+sudo docker exec -d -it tikv3 ./node_exporter;
+```
+
 - Membuat Prometheus Instance
 ```bash
 sudo docker run -d \

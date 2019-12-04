@@ -98,6 +98,11 @@ sudo docker run -d \
     --store=tikv \
     --path="192.170.16.19:2379,192.170.16.20:2379,192.170.16.21:2379";
 
+sleep 20;
+
+# dump to tidb
+myloader -d dump/ -h 127.0.0.1 -u root -P 4000;
+
 # copy node_exporter to node to be monitored
 sudo docker cp ./prometheus/node_exporter-0.18.1.linux-amd64/node_exporter pd1:/;
 sudo docker cp ./prometheus/node_exporter-0.18.1.linux-amd64/node_exporter pd2:/;
@@ -113,6 +118,8 @@ sudo docker exec -d -it pd3 ./node_exporter;
 sudo docker exec -d -it tikv1 ./node_exporter;
 sudo docker exec -d -it tikv2 ./node_exporter;
 sudo docker exec -d -it tikv3 ./node_exporter;
+
+sleep 10;
 
 sudo docker run -d \
     --name prom \
@@ -130,4 +137,6 @@ sudo docker run -d \
     --net fpnet \
     --ip 192.170.16.24 \
     -p 3000:3000 \
-    grafana/grafana;
+    -v "/home/miris/Kuliah/7th Story/basis-data-terdistribusi/fp/grafana/grafana.ini:/conf/grafana.ini" \
+    grafana/grafana \
+    --config="/conf/grafana.ini";
