@@ -1,0 +1,95 @@
+ // CEK //
+ - beberapa form ada input untuk judul. konvensi (ini contoh) [judul baris 1];[judul baris 2];[judul baris 3]
+ - beberapa print judul masih copy-an dari file print lain
+ - konvensi poin 1 bisa dipake buat aturan field yang tipenya text dan mau di numbering
+ - processing poin 1 dan 3 ditaruh di file print
+ - yang inputnya panjang (text/varchar yang besar) diubah jadi <textarea> ? 
+
+// CATATAN //
+- SIPP 2020, SIKD adanya 2019 => mau cek gak nyaman datanya gak sinkron
+- SIKD ada per opd per triwulan? kalo ada bisa ke laporan triwulan?,
+	kalo gak ada bisa untuk realisasi fisik?
+
+// KESULITAN //
+- monitoring kelembagaan: relasi antara dasar hukum dan usulan sulit
+	ditentukan, banyak dasar hukum memiliki 0/lebih usulan dan banyak usulan
+	memiliki 1/lebih dasar hukum
+- Pemberian API (selain SIPP) cukup lama dan data dari API banyak yang tidak terpakai
+	(misal, dashboard madiun ada data pelayanan publik dan terdapat laporan
+		pelayanan publik. Namun dari dashboard hanya menyediakan data statistik saja)
+- JS Add auditor gak bisa masuk function auditorSelect{no}(event)
+
+ // 2 TABEL //
+- monitoring kelembagaan
+	- model done
+	- form done >> ada bagian yang dipaksa jadi text (relasi dasar hukum dan usulan membingungkan)
+	- print done >> nah
+- laporan kinerja triwulan
+	- model done kalo gak ada api
+	- form done kalo gak ada api
+	- print done
+
+// 3 TABEL //
+- realisasi fisik
+	- model done kalo gak ada tambah api
+	- form moga2 done kalo gak ada tambah api
+	- print belum semua hitungan selesai
+
+
+- pemantauan tindak lanjut
+	- model done
+	- form done
+	- print isi status rekomendasi as dan status tindak lanjut null
+
+
+// 4 TABEL //
+- laporan rb fokus
+	- model done
+	- form done
+	- print blum
+- laporan rb prioritas
+	- model done
+	- form done
+	- print blum
+- laporan rb ZI WBK
+	- model done
+	- form done
+	- print blum
+- laporan rb Quick Wins
+	- model done
+	- form done
+	- print blum
+- laporan rb area perubahan
+	- model done
+	- form done
+	- print blum
+
+// SELESAI //
+- ikm
+	- model done
+	- form done
+	- print done
+- sotk
+	- model done
+	- form done
+	- print done
+- tatalaksana
+	- model done
+	- form done
+	- print done
+- pelayanan publik
+	- model done
+	- form done
+	- print done
+- rekap tender
+	- model done
+	- form done
+	- print done
+- jadwal pelaksanaan
+	- model done
+	- form done
+	- print done
+- rekap pokja
+	- model done
+	- form done
+	- print done
