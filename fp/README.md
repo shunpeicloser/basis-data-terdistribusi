@@ -57,7 +57,7 @@ curl -s https://packagecloud.io/install/repositories/akopytov/sysbench/script.de
 sudo apt install sysbench;
 ```
 
-## Menjalankan TiDB, TiKV, PD, Prometheus, dan Grafana Docker Instance ##
+## Menjalankan TiDB, TiKV, PD, Prometheus, dan Grafana Docker Instance serta Node Exporter ##
 - Membuat Docker Network
 ```bash
 sudo docker network create --subnet=192.170.16.0/24 fpnet;
@@ -196,13 +196,23 @@ File [prometheus.yml](prometheus/prometheus.yml) digunakan sebagai config file d
 
 - Membuat Grafana Instance
 ```bash
+wget https://raw.githubusercontent.com/pingcap/tidb-ansible/master/scripts/pd.json -P ./grafana/;
+wget https://raw.githubusercontent.com/pingcap/tidb-ansible/master/scripts/tidb.json -P ./grafana/;
+wget https://raw.githubusercontent.com/pingcap/tidb-ansible/master/scripts/tidb_summary.json -P ./grafana/;
+wget https://raw.githubusercontent.com/pingcap/tidb-ansible/master/scripts/tikv_summary.json -P ./grafana/;
+wget https://raw.githubusercontent.com/pingcap/tidb-ansible/master/scripts/tikv_details.json -P ./grafana/;
+wget https://raw.githubusercontent.com/pingcap/tidb-ansible/master/scripts/tikv_trouble_shooting.json -P ./grafana/;
+
 sudo docker run -d \
     --name grafana \
     --net fpnet \
     --ip 192.170.16.24 \
     -p 3000:3000 \
-    grafana/grafana;
+    -v "/home/miris/Kuliah/7th Story/basis-data-terdistribusi/fp/grafana/grafana.ini:/conf/grafana.ini" \
+    grafana/grafana \
+    --config="/conf/grafana.ini";
 ```
+[grafana.ini](grafana/grafana.ini) adalah file konfigurasi untuk node grafana. 6 file json yang diunduh digunakan untuk menampilkan hasil monitoring pada TiDB, TiKV, dan Placement Driver dari Prometheus ke Grafana.
 
 ## Uji Kinerja
 ### Aplikasi
