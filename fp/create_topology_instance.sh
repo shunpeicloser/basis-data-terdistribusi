@@ -46,6 +46,8 @@ sudo docker run -d \
     --advertise-peer-urls="http://192.170.16.21:2380" \
     --initial-cluster="pd1=http://192.170.16.19:2380,pd2=http://192.170.16.20:2380,pd3=http://192.170.16.21:2380";
 
+sleep 10;
+
 # create cluster node
 sudo docker run -d \
     --name tikv1 \
@@ -57,7 +59,7 @@ sudo docker run -d \
     --addr="0.0.0.0:20160" \
     --advertise-addr="192.170.16.16:20160" \
     --data-dir="/data/tikv1" \
-    --pd="192.168.16.19:2379,192.168.16.20:2379,192.168.16.21:2379";
+    --pd="192.170.16.19:2379,192.170.16.20:2379,192.170.16.21:2379";
 
 sudo docker run -d \
     --name tikv2 \
@@ -69,7 +71,7 @@ sudo docker run -d \
     --addr="0.0.0.0:20160" \
     --advertise-addr="192.170.16.17:20160" \
     --data-dir="/data/tikv2" \
-    --pd="192.168.16.19:2379,192.168.16.20:2379,192.168.16.21:2379";
+    --pd="192.170.16.19:2379,192.170.16.20:2379,192.170.16.21:2379";
 
 sudo docker run -d \
     --name tikv3 \
@@ -81,7 +83,7 @@ sudo docker run -d \
     --addr="0.0.0.0:20160" \
     --advertise-addr="192.170.16.18:20160" \
     --data-dir="/data/tikv3" \
-    --pd="192.168.16.19:2379,192.168.16.20:2379,192.168.16.21:2379";
+    --pd="192.170.16.19:2379,192.170.16.20:2379,192.170.16.21:2379";
 
 sudo docker run -d \
     --name tidb \
@@ -92,4 +94,4 @@ sudo docker run -d \
     -v /etc/localtime:/etc/localtime:ro \
     pingcap/tidb:latest \
     --store=tikv \
-    --path="192.168.1.101:2379,192.168.1.102:2379,192.168.1.103:2379";
+    --path="192.170.16.19:2379,192.170.16.20:2379,192.170.16.21:2379";
