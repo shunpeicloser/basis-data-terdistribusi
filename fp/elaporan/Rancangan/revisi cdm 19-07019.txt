@@ -1,0 +1,5 @@
+Auto Increment Primari key @semua
+created_at, updated_at @surat
+jenis jenis surat created_at dihapus semua
+nama field di jadikan lowercase
+ckeditor

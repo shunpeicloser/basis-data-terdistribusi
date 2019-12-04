@@ -1,0 +1,4 @@
+application/config/
+/upload/
+/application/logs/
+application/config/database.php
