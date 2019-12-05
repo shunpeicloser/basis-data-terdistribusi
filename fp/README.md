@@ -48,12 +48,13 @@ sudo apt install openjdk-8-jre-headless;
 - Apache JMeter
 ```bash
 sudo wget https://www-eu.apache.org/dist/jmeter/binaries/apache-jmeter-5.2.tgz;
-tar zxf apache-jmeter-5.2.tgz -C /home/[user]/
+tar zxf apache-jmeter-5.2.tgz -C /home/[user]/;
 ```
 
 - Sysbench
 ```bash
-
+curl -s https://packagecloud.io/install/repositories/akopytov/sysbench/script.deb.sh | sudo bash;
+sudo apt install sysbench;
 ```
 
 ## Menjalankan TiDB, TiKV, PD, Prometheus, dan Grafana Docker Instance ##
