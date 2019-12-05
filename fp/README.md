@@ -204,3 +204,93 @@ sudo docker run -d \
     grafana/grafana;
 ```
 
+## Uji Kinerja
+### Aplikasi
+
+### Basis Data
+- 3 PD
+```text
+SQL statistics:
+    queries performed:
+        read:                            54233
+        write:                           0
+        other:                           0
+        total:                           54233
+    transactions:                        54233  (5421.51 per sec.)
+    queries:                             54233  (5421.51 per sec.)
+    ignored errors:                      0      (0.00 per sec.)
+    reconnects:                          0      (0.00 per sec.)
+
+General statistics:
+    total time:                          10.0017s
+    total number of events:              54233
+
+Latency (ms):
+         min:                                  0.38
+         avg:                                  0.73
+         max:                                 19.24
+         95th percentile:                      1.14
+         sum:                              39752.06
+
+Threads fairness:
+    events (avg/stddev):           13558.2500/24.51
+    execution time (avg/stddev):   9.9380/0.00
+```
+
+- 2 PD
+```text
+SQL statistics:
+    queries performed:
+        read:                            50921
+        write:                           0
+        other:                           0
+        total:                           50921
+    transactions:                        50921  (5089.73 per sec.)
+    queries:                             50921  (5089.73 per sec.)
+    ignored errors:                      0      (0.00 per sec.)
+    reconnects:                          0      (0.00 per sec.)
+
+General statistics:
+    total time:                          10.0031s
+    total number of events:              50921
+
+Latency (ms):
+         min:                                  0.38
+         avg:                                  0.78
+         max:                                 23.67
+         95th percentile:                      1.32
+         sum:                              39767.32
+
+Threads fairness:
+    events (avg/stddev):           12730.2500/26.98
+    execution time (avg/stddev):   9.9418/0.00
+```
+
+- 1 PD
+```text
+SQL statistics:
+    queries performed:
+        read:                            59653
+        write:                           0
+        other:                           0
+        total:                           59653
+    transactions:                        59653  (5963.42 per sec.)
+    queries:                             59653  (5963.42 per sec.)
+    ignored errors:                      0      (0.00 per sec.)
+    reconnects:                          0      (0.00 per sec.)
+
+General statistics:
+    total time:                          10.0016s
+    total number of events:              59653
+
+Latency (ms):
+         min:                                  0.37
+         avg:                                  0.67
+         max:                                 24.42
+         95th percentile:                      0.95
+         sum:                              39735.74
+
+Threads fairness:
+    events (avg/stddev):           14913.2500/62.27
+    execution time (avg/stddev):   9.9339/0.00
+```
