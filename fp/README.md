@@ -20,7 +20,7 @@
 - Uji Performa
   - Aplikasi
   - Basis Data
-  - Fail Over
+  - Fail Over (Dilakukan pada Uji Performa Basis Data pada jumlah PD yang digunakan)
 - Monitoring Dashboard
 
 ## Instalasi Requirement dan Persiapan ##
