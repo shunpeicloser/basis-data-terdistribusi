@@ -144,13 +144,16 @@ sudo docker run -d \
     --path="192.170.16.19:2379,192.170.16.20:2379,192.170.16.21:2379";
 ```
 
-- Buat user untuk untuk basis data
+- Buat user untuk untuk basis data dan import database Web App Elaporan
 ```bash
 mysql -u root -h 127.0.0.1 -P 4000 -e "create user if not exists 'dbuser'@'%' identified by 'dbpassword'; grant all privileges on elaporan.* to 'dbuser'@'%'; flush privileges;";
+myloader -d dump/ -h 127.0.0.1 -u root -P 4000;
 ```
 
 - Menambahkan dan menjalankan node_exporter ke docker instance yang akan dimonitor
 ```bash
+# copy node_exporter to node to be monitored
+sudo docker cp ./prometheus/node_exporter-0.18.1.linux-amd64/node_exporter tidb:/;
 sudo docker cp ./prometheus/node_exporter-0.18.1.linux-amd64/node_exporter pd1:/;
 sudo docker cp ./prometheus/node_exporter-0.18.1.linux-amd64/node_exporter pd2:/;
 sudo docker cp ./prometheus/node_exporter-0.18.1.linux-amd64/node_exporter pd3:/;
@@ -158,6 +161,8 @@ sudo docker cp ./prometheus/node_exporter-0.18.1.linux-amd64/node_exporter tikv1
 sudo docker cp ./prometheus/node_exporter-0.18.1.linux-amd64/node_exporter tikv2:/;
 sudo docker cp ./prometheus/node_exporter-0.18.1.linux-amd64/node_exporter tikv3:/;
 
+# run node_exporter
+sudo docker exec -d -it tidb ./node_exporter;
 sudo docker exec -d -it pd1 ./node_exporter;
 sudo docker exec -d -it pd2 ./node_exporter;
 sudo docker exec -d -it pd3 ./node_exporter;
@@ -203,6 +208,23 @@ sudo docker run -d \
 ![json](fp_bdt_monitor_listjson.png)
 
 ## Uji Kinerja
+
+### Uji CRUD pada Aplikasi
+- Create\
+![json](fp_bdt_create_1.png)
+![json](fp_bdt_create_2.png)
+
+- Read\
+![json](fp_bdt_read.png)
+
+- Update
+![json](fp_bdt_edit_1.png)
+![json](fp_bdt_edit_2.png)
+
+- Delete
+![json](fp_bdt_delete_1.png)
+![json](fp_bdt_delete_2.png)
+
 ### Uji Kinerja Aplikasi dengan JMeter
 Uji kinerja aplikasi dilakukan pada proses login dengan HTTP Request sebagai berikut.
 ![0](fp_bdt_request.png)
@@ -306,6 +328,11 @@ Threads fairness:
 ## Monitoring Dashboard ##
 - TiDB Monitor
 ![monitor](fp_bdt_monitor_tidb.png)
+
 - PD Monitor
 ![monitor](fp_bdt_monitor_pd.png)
+
 - TiKV Monitor
+![monitor](fp_bdt_tikv.png)\
+Namun pada monitoring TiKV ditemukan permasalahan karena Prometheus tidak dapat mengakses TiKV seperti yang ditunjukkan pada gambar berikut.
+![monitor](fp_bdt_tikv_problem.png)
