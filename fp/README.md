@@ -1,7 +1,6 @@
 # Implementasi Redis Cluster untuk Caching pada Wordpress #
 ## Topology ##
 ![topologi](topologi.png)
-- **Keterangan: wordpress-nr adalah docker instance wordpress yang tidak menggunakan Redis Object Cache**
 
 ## Development Environment ##
 - Docker Host: Linux Mint 19.1 Teressa 4GB 64-bit
