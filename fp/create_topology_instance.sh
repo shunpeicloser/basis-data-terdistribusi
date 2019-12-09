@@ -85,6 +85,7 @@ sleep 20;
 myloader -d dump/ -h 127.0.0.1 -u root -P 4000;
 
 # copy node_exporter to node to be monitored
+sudo docker cp ./prometheus/node_exporter-0.18.1.linux-amd64/node_exporter tidb:/;
 sudo docker cp ./prometheus/node_exporter-0.18.1.linux-amd64/node_exporter pd1:/;
 sudo docker cp ./prometheus/node_exporter-0.18.1.linux-amd64/node_exporter pd2:/;
 sudo docker cp ./prometheus/node_exporter-0.18.1.linux-amd64/node_exporter pd3:/;
@@ -93,6 +94,7 @@ sudo docker cp ./prometheus/node_exporter-0.18.1.linux-amd64/node_exporter tikv2
 sudo docker cp ./prometheus/node_exporter-0.18.1.linux-amd64/node_exporter tikv3:/;
 
 # run node_exporter
+sudo docker exec -d -it tidb ./node_exporter;
 sudo docker exec -d -it pd1 ./node_exporter;
 sudo docker exec -d -it pd2 ./node_exporter;
 sudo docker exec -d -it pd3 ./node_exporter;
